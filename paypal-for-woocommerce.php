@@ -75,6 +75,33 @@ if(!class_exists('AngellEYE_Gateway_Paypal')){
             add_action('admin_enqueue_scripts', array( $this , 'onetarek_wpmut_admin_scripts' ) );
             add_action('admin_print_styles', array( $this , 'onetarek_wpmut_admin_styles' ) );
             add_action( 'woocommerce_cart_calculate_fees', array($this, 'woocommerce_custom_surcharge') );
+
+            add_action( 'admin_footer', array( $this, 'donation_footer') );
+        }
+        function donation_footer(){
+            $section = $_REQUEST['section'];
+            if($section == 'wc_gateway_paypal_pro_payflow_angelleye' || $section == 'wc_gateway_paypal_pro_angelleye' || $section == 'wc_gateway_paypal_express_angelleye'){
+                ?>
+                <form action="https://www.paypal.com/cgi-bin/webscr" id="angelleyedonation" method="post" target="_top">
+                    <input type="hidden" name="cmd" value="_donations">
+                    <input type="hidden" name="business" value="paypal@angelleye.com">
+                    <input type="hidden" name="lc" value="US">
+                    <input type="hidden" name="item_name" value="Angelleye">
+                    <input type="hidden" name="item_number" value="123123">
+                    <input type="hidden" name="amount" value="5.00">
+                    <input type="hidden" name="currency_code" value="USD">
+                    <input type="hidden" name="no_note" value="0">
+                </form>
+                <script type="text/javascript">
+                    jQuery(document).ready(function ($){
+                        $("#bmab").click(function(){
+                            $("#angelleyedonation").submit();
+                            return false;
+                        });
+                    });
+                </script>
+            <?php
+            }
         }
 		
 		/**

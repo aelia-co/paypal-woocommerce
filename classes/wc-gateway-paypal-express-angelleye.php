@@ -87,6 +87,11 @@ class WC_Gateway_PayPal_Express_AngellEYE extends WC_Payment_Gateway {
         <table class="form-table">
             <?php $this->generate_settings_html(); ?>
         </table>
+        <div class="donation">
+            <a href="" id="bmab">
+                <img src="<?php echo PLUGINURL; ?>/assets/images/buymeabeer.png" alt="" />
+            </a>
+        </div>
         <?php
         $this->scriptAdminOption();
     }
