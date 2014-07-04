@@ -271,6 +271,7 @@ class WC_Gateway_PayPal_Pro_AngellEYE extends WC_Payment_Gateway {
             <?php } ?>
         </div>
         <?php
+        $this->scriptAdminOption();
     }
     /*
      * Script admin options
