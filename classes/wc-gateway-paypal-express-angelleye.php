@@ -79,14 +79,30 @@ class WC_Gateway_PayPal_Express_AngellEYE extends WC_Payment_Gateway {
      *
      * @since 1.0.0
      */
-    public function admin_options() { ?>
-
-<h3><?php echo isset( $this->method_title ) ? $this->method_title : __( 'Settings', 'paypal-for-woocommerce' ) ; ?></h3>
-<?php echo isset( $this->method_description ) ? wpautop( $this->method_description ) : ''; ?>
-<table class="form-table">
-  <?php $this->generate_settings_html(); ?>
-</table>
-<?php
+    public function admin_options() {
+        global $current_user ;
+        $user_id = $current_user->ID;
+        ?>
+    <h3><?php echo isset( $this->method_title ) ? $this->method_title : __( 'Settings', 'paypal-for-woocommerce' ) ; ?></h3>
+    <?php echo isset( $this->method_description ) ? wpautop( $this->method_description ) : ''; ?>
+        <div class="angelleye_AdminPage">
+            <div class="angelleyeBox">
+                <table class="form-table">
+                    <?php $this->generate_settings_html(); ?>
+                </table>
+            </div>
+            <?php if(!get_user_meta($user_id, 'ignore_pe_bmab')){ ?>
+            <div class="angelleyeBox">
+                <div class="donation">
+                    <a href="" id="bmab">
+                        <img src="<?php echo plugins_url( 'assets/images/buymeabeer.png' , dirname(__FILE__) ); ?>" alt="Buy me a beer" width="300" />
+                    </a>
+                    <a href="<?php echo add_query_arg("ignore_pe_bmab",0); ?>">Click here to hide</a>
+                </div>
+            </div>
+            <?php } ?>
+        </div>
+    <?php
         $this->scriptAdminOption();
     }
     public function scriptAdminOption(){

@@ -1,0 +1,7 @@
+.angelleye_AdminPage{
+    display: table-row;
+}
+.angelleyeBox{
+    display: table-cell;
+    vertical-align: top;
+}

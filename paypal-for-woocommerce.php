@@ -75,6 +75,42 @@ if(!class_exists('AngellEYE_Gateway_Paypal')){
             add_action('admin_enqueue_scripts', array( $this , 'onetarek_wpmut_admin_scripts' ) );
             add_action('admin_print_styles', array( $this , 'onetarek_wpmut_admin_styles' ) );
             add_action( 'woocommerce_cart_calculate_fees', array($this, 'woocommerce_custom_surcharge') );
+
+            // Add hook to admin footer
+            add_action( 'admin_footer', array( $this, 'donation_footer') );
+            wp_register_style( 'paypalAdminStyle', plugins_url('assets/css/paypal_admin.css', __FILE__) );
+        }
+        /*
+         * Add a form buy me a beer to admin footer if current page is for plugin.
+         */
+        function donation_footer(){
+            $section = $_REQUEST['section'];
+            if($section == 'wc_gateway_paypal_pro_payflow_angelleye' || $section == 'wc_gateway_paypal_pro_angelleye' || $section == 'wc_gateway_paypal_express_angelleye'){
+                wp_enqueue_style('paypalAdminStyle');
+            ?>
+                <form action="https://www.paypal.com/cgi-bin/webscr" id="angelleyedonation" method="post" target="_top">
+                    <input type="hidden" name="cmd" value="_donations">
+                    <input type="hidden" name="business" value="paypal@angelleye.com">
+                    <input type="hidden" name="lc" value="US">
+                    <input type="hidden" name="item_name" value="Angelleye">
+                    <input type="hidden" name="item_number" value="123123">
+                    <input type="hidden" name="amount" value="5.00">
+                    <input type="hidden" name="currency_code" value="USD">
+                    <input type="hidden" name="no_note" value="0">
+                </form>
+                <script type="text/javascript">
+                    jQuery(document).ready(function ($){
+                        $("#bmab").click(function(){
+                            $("#angelleyedonation").submit();
+                            return false;
+                        });
+                        $("#bmab").next('a').click(function(e){
+                            $(this).parent().parent().hide(500);
+                        });
+                    });
+                </script>
+             <?php
+             }
         }
 		
 		/**
@@ -171,7 +207,7 @@ if(!class_exists('AngellEYE_Gateway_Paypal')){
             }
             $user_id = $current_user->ID;
             /* If user clicks to ignore the notice, add that to their user meta */
-            $notices = array('ignore_pp_ssl', 'ignore_pp_sandbox', 'ignore_pp_woo', 'ignore_pp_check');
+            $notices = array('ignore_pp_ssl', 'ignore_pp_sandbox', 'ignore_pp_woo', 'ignore_pp_check','ignore_pe_bmab','ignore_pp_bmab','ignore_pf_bmab');
             foreach ($notices as $notice)
                 if ( isset($_GET[$notice]) && '0' == $_GET[$notice] ) {
                     add_user_meta($user_id, $notice, 'true', true);
