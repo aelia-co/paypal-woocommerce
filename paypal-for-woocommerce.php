@@ -78,16 +78,16 @@ if(!class_exists('AngellEYE_Gateway_Paypal')){
 
             // Add hook to admin footer
             add_action( 'admin_footer', array( $this, 'donation_footer') );
-            wp_register_style( 'paypalAdminStyle', plugins_url('assets/css/paypal_admin.css', __FILE__) );
         }
         /*
          * Add a form buy me a beer to admin footer if current page is for plugin.
          */
         function donation_footer(){
-            $section = $_REQUEST['section'];
+            $section = isset($_REQUEST['section']) ? $_REQUEST['section'] : '';
             if($section == 'wc_gateway_paypal_pro_payflow_angelleye' || $section == 'wc_gateway_paypal_pro_angelleye' || $section == 'wc_gateway_paypal_express_angelleye'){
-                wp_enqueue_style('paypalAdminStyle');
+                wp_enqueue_style('paypalAdminStyle',plugins_url('assets/css/paypal_admin.css', __FILE__));
             ?>
+
                 <form action="https://www.paypal.com/cgi-bin/webscr" id="angelleyedonation" method="post" target="_top">
                     <input type="hidden" name="cmd" value="_donations">
                     <input type="hidden" name="business" value="paypal@angelleye.com">
